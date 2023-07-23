@@ -16,12 +16,12 @@ def execute(emails, model):
 
         if p == 'spam':
             res = "It is a spam"
-            percent = pred_percent[ind][1]
-            print(res, f'Probability: {percent}')
+            percent = pred_percent[ind][1] * 100
+            print(res, f'Probability: {percent}%')
             continue
 
         elif p == 'ham':
             res = "It is not a spam"
-            percent = pred_percent[ind][1]
-            print(res, f'Probability: {percent}')
+            percent = pred_percent[ind][1] * 100
+            print(res, f'Probability: {percent}%')
             continue

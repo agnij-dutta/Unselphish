@@ -3,7 +3,7 @@ import time
 import hashlib
 from printv import printv
 
-API_KEY_VIRUSTOTAL = "05a005915e6bd5d067fa6d4c6c985746a5c2b7d371b840500c2b0630f11c7b1c"
+API_KEY_VIRUSTOTAL = ""
 
 # def scanfile(filepath):
 #     client = vt.Client(API_KEY_VIRUSTOTAL)

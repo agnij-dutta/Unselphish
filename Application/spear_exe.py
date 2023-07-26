@@ -1,39 +1,8 @@
 import pickle
-model = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model.sav', 'rb'))
-model1 = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model_1.sav', 'rb'))
-model3 = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model_3.sav', 'rb'))
-model4 = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model_4.sav', 'rb'))
-model5 = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model_5.sav', 'rb'))
-model6 = pickle.load(open(r'C:\Users\USER\Desktop\Unselphish\Unselphish-main\ML_models\model_6.sav', 'rb'))
 
-def execute(emails, model):
-
-    '''emails = [str]
-    It is reccomended to only pass 1 email per execution for readabitly and easier debugging experience'''
-
-    prediction = model.predict(emails)
-    pred_percent = model.predict_proba(emails)
-
-    res = "Cannot be determined"
-    percent = "Cannot be determined"
-
-    for ind in range(len(list(prediction))):
-        p = list(prediction)[ind]
-
-        if p == 0:
-            res = "It is a spam"
-            percent = pred_percent[ind][0] * 100
-            print(res, f'Probability: {round(percent)}%')
-            continue
-
-        elif p == 1:
-            res = "It is not a spam"
-            percent = pred_percent[ind][1] * 100
-            print(res, f'Probability: {round(percent)}%')
-            continue
-
-
-email = ['''Subject: You have (3) failed email deliveries
+emails = ['your microsoft account has been compromised ,you must update before or else your account going to close click to update', 'Today we want to inform you that the application period for 15.000 free Udacity Scholarships in Data Science is now open! Please apply by November 16th, 2020 via https://www.udacity.com/bertelsmann-tech-scholarships.']
+input_var = ["Guess what? You have been shortlisted to win a free HP Laptop. It is a one-time oppurtunity. Don't miss this!! Txt on 9876543234 to claim your reward", "Alert!! Win a free Apple watch today. Call at 0987657654 to claim your reward. Hurry! Don't Miss this one-time opportunity!!"]
+test = ['''Subject: You have (3) failed email deliveries
 Sender address: noreply@domain.com
 Sender ip:
 Reply_to:
@@ -43,14 +12,52 @@ Reply_to:
 you have (3) failed email deliveries verify your information to deliver your e-mails  brad@malware-traffic-analysis.net  retrieve your mails    please kindly retrieve your email
 
 ======================================================''']
-execute(email, model)
-print('\n')
-execute(email, model1)
-print('\n')
-execute(email, model3)
-print('\n')
-execute(email, model4)
-print('\n')
-execute(email, model5)
-print('\n')
-execute(email, model6)
+
+def execute(emails):
+
+    '''emails = [str]
+    It is reccomended to only pass 1 email per execution for readabitly and easier debugging experience'''
+
+    total_percent = 0
+    spam_count = ham_count = 0
+
+    for i in range(1,7):
+        model = pickle.load(open(fr'.\ai_ml\model_{i}.sav', 'rb'))
+        prediction = model.predict(emails)
+        pred_percent = model.predict_proba(emails)
+
+        print(f"Model {i} running....")
+
+        res = "Cannot be determined"
+        percent = "Cannot be determined"
+
+        for ind in range(len(list(prediction))):
+            p = list(prediction)[ind]
+            percent = pred_percent[ind][0]*100
+            total_percent += percent
+
+            if p == 0:
+                res = "It is a spam"
+                spam_count += 1
+                continue
+
+            elif p == 1:
+                res = "It is not a spam"
+                ham_count += 1
+                continue
+
+    av_percent = total_percent/6
+    if spam_count > ham_count:
+        res = "It is a spam"
+    elif ham_count > spam_count:
+        res = "It is not a spam"
+    else:
+        pass
+
+    print(res, f'- Probability: {round(av_percent)}%')
+
+
+input_var = test
+
+execute(input_var)
+
